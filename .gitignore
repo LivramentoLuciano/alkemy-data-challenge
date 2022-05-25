@@ -1,0 +1,8 @@
+# Entorno virtual - Python Packages
+venv/
+
+# Variables de entorno - Configuracion
+.env
+
+# Primeras pruebas locales
+keys.py
