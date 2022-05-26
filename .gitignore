@@ -6,3 +6,13 @@ venv/
 
 # Primeras pruebas locales
 keys.py
+tests.py
+
+#
+__pycache__
+
+# datasets guardados localmente
+data/
+
+# notebooks para pruebas locales
+notebooks/
