@@ -16,3 +16,10 @@ data/
 
 # notebooks para pruebas locales
 notebooks/
+
+#
+notes.md
+
+# Streamlit (visualizacion de data, pruebas)
+.streamlit
+st-app.py
