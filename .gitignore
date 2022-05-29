@@ -4,20 +4,23 @@ venv/
 # Variables de entorno - Configuracion
 .env
 
-# Primeras pruebas locales
-keys.py
-tests.py
-
 #
 __pycache__
 
-# datasets guardados localmente
+# Pruebas locales
+keys.py
+tests.py
+
+# Datasets guardados localmente
 data/
 
-# notebooks para pruebas locales
+# Notebooks pruebas
 notebooks/
 
-#
+# Analisis de datos 
+data_analysis.py
+
+# Notas personales
 notes.md
 
 # Streamlit (visualizacion de data, pruebas)

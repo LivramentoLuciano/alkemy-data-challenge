@@ -92,7 +92,7 @@ def update_data_libraries():
 
 
 # Carga datasets desde el archivo csv local
-def load_data(category:str, date_loaded:datetime=TODAY) -> pd.DataFrame:
+def load_data(category:str, dtype:dict=None, date_loaded:datetime=TODAY) -> pd.DataFrame:
     '''
     Devuelve un Dataframe a partir de los datos guardados localmente (csv), de la categoría indicada
     y la fecha estipulada (por defecto, el dia en curso).
@@ -104,7 +104,8 @@ def load_data(category:str, date_loaded:datetime=TODAY) -> pd.DataFrame:
     '''
     filepath = build_file_path(category)
     try:
-        data = pd.read_csv(filepath)        
+        # dtype decidi resolverlo en el preprocessor
+        data = pd.read_csv(filepath)
     except Exception as e:
         print(f'Hubo un error leyendo el archivo. Error: {e}')
         # devuelvo un dataframe vacio
@@ -151,139 +152,3 @@ def load_data_cinemas() ->pd.DataFrame:
     data = load_data(CATEGORY_CINEMAS)
     return data
 
-
-## Procesamiento de los datos
-
-# Constantes de normalizacion, campos de datos (nombres)
-MUSEUMS_FIELDS_NORM_DICT = {
-    'Cod_Loc': 'cod_localidad',
-    'IdProvincia': 'id_provincia',
-    'IdDepartamento': 'id_departamento',
-    'categoria': 'categoría',
-    'provincia': 'provincia',
-    'localidad': 'localidad',
-    'nombre': 'nombre',
-    'direccion': 'domicilio',
-    'CP': 'código_postal',
-    'telefono': 'número_de_teléfono',
-    'Mail': 'mail',
-    'Web': 'web',
-    'fuente': 'fuente'
-}
-
-CINEMAS_FIELDS_NORM_DICT = {
-    'Cod_Loc': 'cod_localidad',
-    'IdProvincia': 'id_provincia',
-    'IdDepartamento': 'id_departamento',
-    'Categoría': 'categoría',
-    'Provincia': 'provincia',
-    'Localidad': 'localidad',
-    'Nombre': 'nombre',
-    'Dirección': 'domicilio',
-    'CP': 'código_postal',
-    'Teléfono': 'número_de_teléfono',
-    'Mail': 'mail',
-    'Web': 'web',
-    'Fuente': 'fuente'
-}
-
-LIBRARIES_FIELDS_NORM_DICT = {
-    'Cod_Loc': 'cod_localidad',
-    'IdProvincia': 'id_provincia',
-    'IdDepartamento': 'id_departamento',
-    'Categoría': 'categoría',
-    'Provincia': 'provincia',
-    'Localidad': 'localidad',
-    'Nombre': 'nombre',
-    'Domicilio': 'domicilio',
-    'CP': 'código_postal',
-    'Teléfono': 'número_de_teléfono',
-    'Mail': 'mail',
-    'Web': 'web',
-    'Fuente': 'fuente'
-}
-
-FIELDS_COMBINED_DF = [
-    'cod_localidad',
-    'id_provincia',
-    'id_departamento',
-    'categoría',
-    'provincia',
-    'localidad',
-    'nombre',
-    'domicilio',
-    'código_postal',
-    'número_de_teléfono',
-    'mail',
-    'web',
-    'fuente'
-]
-
-# Normalizacion de todas las tablas (para luego poder combinarlas)
-def normalize_source_data(**kwargs) -> tuple[pd.DataFrame]:
-    '''
-    Normaliza los campos de Museos, Salas de cine y Bibliotecas populares, cumpliendo con:
-        - cod_localidad
-        - id_provincia
-        - id_departamento
-        - categoría
-        - provincia
-        - localidad
-        - nombre
-        - domicilio
-        - código postal
-        - número de teléfono
-        - mail
-        - web
-    
-    >>> normalize_source_data(museums=museums, cinemas=cinemas, libraries=libraries)
-    tuple(museums_normalized, cinemas_normalized, libraries_normalized)
-    '''
-    # Dataframes a normalizar
-    df_museums = kwargs['museums'].copy()
-    df_cinemas = kwargs['cinemas'].copy()
-    df_libraries = kwargs['libraries'].copy()
-
-    # renombro columnas, para compatibilidad entre dataframes
-    df_museums.rename(columns=MUSEUMS_FIELDS_NORM_DICT, inplace=True)
-    df_cinemas.rename(columns=CINEMAS_FIELDS_NORM_DICT, inplace=True)
-    df_libraries.rename(columns=LIBRARIES_FIELDS_NORM_DICT, inplace=True)
-
-    # retengo solo las columnas indicadas
-    df_museums = df_museums[FIELDS_COMBINED_DF]
-    df_cinemas = df_cinemas[FIELDS_COMBINED_DF]
-    df_libraries = df_libraries[FIELDS_COMBINED_DF]
-
-    return (df_museums, df_cinemas, df_libraries)
-
-# Combino las tablas en 1 sola (asumo ya normalizadas)
-def combine_dataframes(**kwargs) -> pd.DataFrame:
-    '''
-    Combina la información de Museos, Salas de cine y Bibliotecas populares en una sola tabla,
-    conteniendo:
-        - cod_localidad
-        - id_provincia
-        - id_departamento
-        - categoría
-        - provincia
-        - localidad
-        - nombre
-        - domicilio
-        - código postal
-        - número de teléfono
-        - mail
-        - web
-    
-    Asumo que los dataframes recibidos ya fueron normalizados.
-
-    >>> combine_dataframes(museums=museums_norm, cinemas=cinemas_norm, libraries=libraries_norm)
-
-    '''
-    # Dataframes a combinar
-    df_museums = kwargs['museums'].copy()
-    df_cinemas = kwargs['cinemas'].copy()
-    df_libraries = kwargs['libraries'].copy()
-
-    df_combined = pd.concat([df_museums, df_cinemas, df_libraries], axis=0)
-
-    return df_combined

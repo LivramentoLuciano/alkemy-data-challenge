@@ -1,25 +1,31 @@
 from utils import *
-import pandas as pd
+from preprocessor import *
+from queries import *
+
 
 # Cargo y guardo localmente los datos al dia de la fecha
 museums_raw = load_data_museums()
 cinemas_raw = load_data_cinemas()
 libraries_raw = load_data_libraries()
 
-# normalizo datos (igualdad de nombres de columnas) y visualizo resultado
-museums_norm, cinemas_norm, libraries_norm = normalize_source_data(
-    museums=museums_raw, 
-    cinemas=cinemas_raw, 
-    libraries=libraries_raw
-)
 
-# print(museums_norm)
-# print(cinemas_norm)
-# print(libraries_norm)
+# Preproceso los datos
+print('Preproceso datasets...')
+museums_prepr = preprocess_museums_data(museums_raw)
+cinemas_prepr = preprocess_cinemas_data(cinemas_raw)
+libraries_prepr = preprocess_libraries_data(libraries_raw)
 
-# combino los dataframes normalizados
-cultural_df = combine_dataframes(museums=museums_norm, cinemas=cinemas_norm, libraries=libraries_norm)
-print(cultural_df)
+# Normalizar las tablas (?)
+#
+
+# cargar tablas normalizada a base de datos
 
 
+# consultar base de datos y generar nuevas tablas
+cinemas_summary = get_cinemas_summary(cinemas_prepr)
+print(cinemas_summary)
 
+# cargar nuevas tablas generadas a la base de datos
+
+
+# fin
