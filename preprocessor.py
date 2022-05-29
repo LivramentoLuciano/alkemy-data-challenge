@@ -94,6 +94,37 @@ LIBRARIES_DTYPE = {
     'Año_actualizacion': int,
 }
 
+def preprocess_museums_data(museums:pd.DataFrame) ->pd.DataFrame:
+    '''
+    Procesamiento de datos de Museos...
+    Busca validar los datos del dataset, para pasar de los datos crudos 
+    a datos con un formato uniforme que luego pueda aplicarle otros procesos
+    de extraccion de información.
+
+    >>> preprocess_museums_data(museums_raw)
+    dataframe(museums_prepr)
+    '''
+    # dataframe a preprocesar
+    museums_prepr = museums.copy()
+
+    # Manejo valores s/d y NA
+    museums_prepr = museums_prepr.apply(handle_col_sd)
+    museums_prepr = museums_prepr.apply(handle_col_null)        
+
+    # Convierto dtype segun indicado en la Web (en caso de conflicto, ignora la conversion)
+    museums_prepr = museums_prepr.astype(MUSEUMS_DTYPE, errors='ignore')
+
+    # Manejo errores de Input de sus diferentes campos (ejemplo: 'si' = 'SI')
+    museums_prepr = handle_museums_input_error(museums_prepr)
+
+    # Unificacion de nombres de los distintos campos
+    museums_prepr = rename_data_fields(df=museums_prepr, norm_dict=MUSEUMS_FIELDS_NORM_DICT)
+
+    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    museums_prepr.insert(0,'id', museums_prepr.index)
+    
+    return museums_prepr
+
 def preprocess_cinemas_data(cinemas:pd.DataFrame) ->pd.DataFrame:
     '''
     Procesamiento de datos de Cines...
@@ -120,36 +151,11 @@ def preprocess_cinemas_data(cinemas:pd.DataFrame) ->pd.DataFrame:
     # Unificacion de nombres de los distintos campos
     cinemas_prepr = rename_data_fields(df=cinemas_prepr, norm_dict=CINEMAS_FIELDS_NORM_DICT)
 
+    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    cinemas_prepr.insert(0,'id', cinemas_prepr.index)
+
     # Devuelvo el dataframe cinemas_preprocesado, Ok
     return cinemas_prepr
-
-def preprocess_museums_data(museums:pd.DataFrame) ->pd.DataFrame:
-    '''
-    Procesamiento de datos de Museos...
-    Busca validar los datos del dataset, para pasar de los datos crudos 
-    a datos con un formato uniforme que luego pueda aplicarle otros procesos
-    de extraccion de información.
-
-    >>> preprocess_museums_data(museums_raw)
-    dataframe(museums_prepr)
-    '''
-    # dataframe a preprocesar
-    museums_prepr = museums.copy()
-
-    # Manejo valores s/d y NA
-    museums_prepr = museums_prepr.apply(handle_col_sd)
-    museums_prepr = museums_prepr.apply(handle_col_null)        
-
-    # Convierto dtype segun indicado en la Web (en caso de conflicto, ignora la conversion)
-    museums_prepr = museums_prepr.astype(MUSEUMS_DTYPE, errors='ignore')
-
-    # Manejo errores de Input de sus diferentes campos (ejemplo: 'si' = 'SI')
-    museums_prepr = handle_museums_input_error(museums_prepr)
-
-    # Unificacion de nombres de los distintos campos
-    museums_prepr = rename_data_fields(df=museums_prepr, norm_dict=MUSEUMS_FIELDS_NORM_DICT)
-    
-    return museums_prepr
 
 def preprocess_libraries_data(libraries:pd.DataFrame) ->pd.DataFrame:
     '''
@@ -175,7 +181,10 @@ def preprocess_libraries_data(libraries:pd.DataFrame) ->pd.DataFrame:
     libraries_prepr = handle_libraries_input_error(libraries_prepr)
 
     # Unificacion de nombres de los distintos campos
-    libraries_prepr = rename_data_fields(df=libraries_prepr, norm_dict=LIBRARIES_FIELDS_NORM_DICT)    
+    libraries_prepr = rename_data_fields(df=libraries_prepr, norm_dict=LIBRARIES_FIELDS_NORM_DICT)
+
+    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    libraries_prepr.insert(0,'id', libraries_prepr.index)
     
     return libraries_prepr
 

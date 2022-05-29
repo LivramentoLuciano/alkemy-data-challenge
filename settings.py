@@ -1,4 +1,5 @@
 from decouple import config
+from keys import *
 
 DEBUG = config('DEBUG', cast=bool)
 DATABASES = {
@@ -10,3 +11,5 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+DATABASE_URI = f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:5432/{DB_NAME}'
