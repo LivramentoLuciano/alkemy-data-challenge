@@ -152,3 +152,8 @@ def load_data_cinemas() ->pd.DataFrame:
     data = load_data(CATEGORY_CINEMAS)
     return data
 
+def load_full_data() -> tuple[pd.DataFrame]:
+    museums = load_data_museums()
+    cinemas = load_data_cinemas()
+    libraries = load_data_libraries()
+    return (museums, cinemas, libraries)

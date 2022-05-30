@@ -62,7 +62,7 @@ CINEMAS_DTYPE = {
     'tipo_gestion': str,
     'Pantallas': int,
     'Butacas': int,
-    'espacio_INCAA': str,
+    'espacio_INCAA': int,
     'año_actualizacion': int,
 }
 
@@ -402,8 +402,8 @@ def handle_libraries_input_error(libraries:pd.DataFrame) ->pd.DataFrame:
 # Corrige errores input 'espacio_INCAA'
 def handle_cinemas_espacioincaa_error(x):
     '''Corrección de errores de input del campo "espacio_INCAA, del dataset Cines"'''
-    if x in ['si', 'SI', 'Si', 1]: return 'Si'
-    elif x in ['no', 'NO', 'No', 0]: return 'No'
+    if x in ['si', 'SI', 'Si', 1]: return 1
+    elif x in ['no', 'NO', 'No', 0]: return 0
     else: return None
 
 # TODO: Corrige errores input 'piso'

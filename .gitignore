@@ -15,9 +15,6 @@ models_mockup.py
 # Datasets guardados localmente
 data/
 
-# Notebooks pruebas
-notebooks/
-
 # Analisis de datos 
 data_analysis.py
 
