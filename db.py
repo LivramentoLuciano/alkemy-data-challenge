@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker, load_only
 from models import *
 from contextlib import contextmanager
 import pandas as pd
+from utils import TODAY
 
 # conexión a la base de datos mediante Sqlalchemy
 engine = create_engine(DATABASE_URI)
@@ -158,8 +159,9 @@ def get_combined_df_from_sql() -> pd.DataFrame():
     # Finalmente obtengo el dataframe resultante de ejecutar la consulta anterior
     df = pd.read_sql_query(sql=union_query, con=engine)
 
-    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    # agrego campo 'id' y 'fecha_carga' para cargarlo en db postgres
     df.insert(0,'id', df.index)
+    df['fecha_carga'] = TODAY.date()
     
     # return union_query
     return df
@@ -198,6 +200,9 @@ def get_categories_totals_from_sql() ->pd.DataFrame:
         con=categories_totals_query.session.bind
     )
 
+    # agrego campo 'fecha_carga' para cargarlo en db postgres
+    categories_totals_df['fecha_carga'] = TODAY.date()    
+
     return categories_totals_df
 
 # Obtener DataFrame de registros por fuente, de la tabla conjunta
@@ -218,6 +223,9 @@ def get_sources_totals_from_sql() -> pd.DataFrame:
         con=sources_totals_query.session.bind
     )
 
+    # agrego campo 'fecha_carga' para cargarlo en db postgres
+    sources_totals_df['fecha_carga'] = TODAY.date()   
+
     return sources_totals_df
 
 # Obtener DataFrame de registros por provincia y categoria, de la tabla conjunta
@@ -237,6 +245,9 @@ def get_province_and_category_totals_from_sql() -> pd.DataFrame:
         sql=province_and_category_query.statement, 
         con=province_and_category_query.session.bind
     )
+
+    # agrego campo 'fecha_carga' para cargarlo en db postgres
+    province_and_category_df['fecha_carga'] = TODAY.date()       
 
     return province_and_category_df
 
@@ -302,6 +313,9 @@ def get_cinemas_summary_from_sql() ->pd.DataFrame:
         sql=cinemas_summary_query.statement, 
         con=cinemas_summary_query.session.bind,
     )
+
+    # agrego campo 'fecha_carga' para cargarlo en db postgres
+    cinemas_summary_df['fecha_carga'] = TODAY.date()   
 
     return cinemas_summary_df    
 

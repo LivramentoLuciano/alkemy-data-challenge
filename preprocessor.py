@@ -8,6 +8,7 @@
 ###       TODO: Decidir manejo de Null, s/d, N/A
 ###     - Unificar nombres de los campos
 import pandas as pd
+from utils import TODAY
 
 # Datatypes indicados en la Web (sino read_csv asume por default)
 MUSEUMS_DTYPE = {
@@ -120,9 +121,10 @@ def preprocess_museums_data(museums:pd.DataFrame) ->pd.DataFrame:
     # Unificacion de nombres de los distintos campos
     museums_prepr = rename_data_fields(df=museums_prepr, norm_dict=MUSEUMS_FIELDS_NORM_DICT)
 
-    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    # inserto campo 'id' y 'fecha_carga' para guardarlo en postgres db
     museums_prepr.insert(0,'id', museums_prepr.index)
-    
+    museums_prepr['fecha_carga'] = TODAY.date()
+
     return museums_prepr
 
 def preprocess_cinemas_data(cinemas:pd.DataFrame) ->pd.DataFrame:
@@ -151,8 +153,9 @@ def preprocess_cinemas_data(cinemas:pd.DataFrame) ->pd.DataFrame:
     # Unificacion de nombres de los distintos campos
     cinemas_prepr = rename_data_fields(df=cinemas_prepr, norm_dict=CINEMAS_FIELDS_NORM_DICT)
 
-    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    # inserto campo 'id' y 'fecha_carga' para guardarlo en postgres db
     cinemas_prepr.insert(0,'id', cinemas_prepr.index)
+    cinemas_prepr['fecha_carga'] = TODAY.date()
 
     # Devuelvo el dataframe cinemas_preprocesado, Ok
     return cinemas_prepr
@@ -183,8 +186,9 @@ def preprocess_libraries_data(libraries:pd.DataFrame) ->pd.DataFrame:
     # Unificacion de nombres de los distintos campos
     libraries_prepr = rename_data_fields(df=libraries_prepr, norm_dict=LIBRARIES_FIELDS_NORM_DICT)
 
-    # TODO: prueba, deberia generarle un campo 'id'? para dsp guardarlo en mi db
+    # inserto campo 'id' y 'fecha_carga' para guardarlo en postgres db
     libraries_prepr.insert(0,'id', libraries_prepr.index)
+    libraries_prepr['fecha_carga'] = TODAY.date()
     
     return libraries_prepr
 

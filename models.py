@@ -1,7 +1,7 @@
 ### Modelos de Tablas de mi Base de datos
 ###
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column,  Integer, String, Float
+from sqlalchemy import Column,  Integer, String, Float, Date
 
 # Clase Base para modelos de datos
 Base = declarative_base()
@@ -44,6 +44,7 @@ class Museum(Base):
     gestion = Column(String, name='gestión')
     ano_inauguracion = Column(Integer, name='año_inauguración')
     ano_actualizacion = Column(Integer, name='año_actualización')
+    fecha_carga = Column(Date, name='fecha_carga')
 
     # def __init__(self,)
 
@@ -81,6 +82,7 @@ class Cinema(Base):
     butacas = Column(Integer, name='butacas')
     espacio_incaa = Column(Integer, name='espacio_incaa')
     ano_actualizacion = Column(Integer, name='año_actualización')
+    fecha_carga = Column(Date, name='fecha_carga')
 
     # Impresion del objeto al traerlo de la DB
     def __repr__(self):
@@ -114,7 +116,8 @@ class Library(Base):
     tipo_latitud_longitud = Column(String, name='tipo_latitud_longitud')
     gestion = Column(String, name='gestión')
     ano_inauguracion = Column(Integer, name='año_inauguración')
-    ano_actualizacion = Column(Integer, name='año_actualización')        
+    ano_actualizacion = Column(Integer, name='año_actualización')
+    fecha_carga = Column(Date, name='fecha_carga')      
 
     # Impresion del objeto al traerlo de la DB
     def __repr__(self):
@@ -138,6 +141,7 @@ class CulturalSite(Base):
     mail = Column(String, name='mail')
     web = Column(String, name='web')
     fuente = Column(String, name='fuente')
+    fecha_carga = Column(Date, name='fecha_carga')
 
     # Impresion del objeto al traerlo de la DB
     def __repr__(self):
