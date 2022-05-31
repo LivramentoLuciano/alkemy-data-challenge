@@ -51,14 +51,42 @@ def main():
     set_province_and_category_totals_table(province_and_category_totals_df)
     print('Listo!')
 
-    # consultar tabla "salas de cine" y generar tablas "resumen salas de cine"
+    # Consultar tabla "salas de cine" y generar tablas "resumen salas de cine"
     print('Consultando "Resumen Salas de Cine" en postgres db...', end=' ')
     cinemas_summary_df = get_cinemas_summary_from_sql()
     print('Listo!')
 
+    # Cargar tablas generada de "Resumen Salas de cine" a postgres db
     print('Cargando tabla "Resumen Salas de Cine" en postgres db...', end=' ')
     set_cinemas_summary_table(cinemas_summary_df)
     print('Listo!')
+    print()
+
+    # Resultados:
+    print('Tabla conjunta')
+    print('-'*50)
+    print(combined_df)
+    print()
+
+    print('Totales por Categoría')
+    print('-'*50)
+    print(categories_totals_df)
+    print()
+
+    print('Totales por Fuente')
+    print('-'*50)
+    print(sources_totals_df)
+    print()
+
+    print('Totales por Provincia y Categoría')
+    print('-'*50)
+    print(province_and_category_totals_df)
+    print()
+
+    print('Resumen Salas de Cine')
+    print('-'*50)
+    print(cinemas_summary_df)
+    print()
 
     # fin
     session.close()
