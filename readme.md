@@ -49,6 +49,10 @@ Para ejecutar este programa, simplemente ingresar el siguiente comando desde la 
 streamlit run app.py
 ```
 
+- Video ilustrativo de la app
+
+https://user-images.githubusercontent.com/27143242/171085651-252d8598-ce20-4e9f-9299-eee7c771c062.mp4
+
 ## Todo's
 - Normalización
 - Logs
